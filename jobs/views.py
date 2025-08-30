@@ -1,3 +1,5 @@
+from idlelib import query
+
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -15,11 +17,7 @@ def job_list_view(request):
     jobs = Job.objects.all()
     query = request.GET.get('q', None)
     if query is not None:
-        jobs = jobs.filter(
-            Q(job_title__icontains=query),
-            Q(job_description__icontains=query),
-            Q(location__icontains=query)
-        )
+        jobs = jobs.filter(Q(job_title__icontains=query) | Q(job_description__icontains=query) | Q(location__icontains=query))
     context = {
         'jobs': jobs,
     }
@@ -37,7 +35,16 @@ def job_detail_view(request, pk):
         
     applicants = JobApplicant.objects.filter(job=job)
     has_applied = JobApplicant.objects.filter(job=job, user=user).exists() if user.is_authenticated else False
-    
+
+    if has_applied:
+             context = {
+            # 'job': job,
+            # 'user': user,
+            # 'applicants': applicants,
+            # 'has_applied': has_applied,
+    }
+    return render(request, 'jobs/job_detail.html')
+
     context = {
         'job': job,
         'user': user,

@@ -9,7 +9,11 @@ def get_filename_ext(filepath):
     return name, ext
 
 def upload_image_path(instance, filename):
-    pass
+    new_filename = random.randint(1, 10000)
+    name, ext = get_filename_ext(filename)
+    final_filename = "{new_filename}{ext}".format(new_filename=new_filename, ext=ext)
+    # return "Quiz-4/{new_filename}/{final_filename}".format(new_filename=new_filename, final_filename=final_filename)
+    return f"profile_pictures/{final_filename}"
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, password=None, is_active=True, is_staff=False, is_admin=False):
@@ -30,11 +34,11 @@ class UserManager(BaseUserManager):
 
         return user_obj
 
-    def create_staffuser(self, email,username, password=None):
+    def create_staffuser(self, email, username, password=None):
         user = self.create_user(email,username, password, is_staff=True, is_active=True)
         return user
 
-    def create_superuser(self, email,username, password=None):
+    def create_superuser(self, email, username, password=None):
         user = self.create_user(
             email,
             username,
