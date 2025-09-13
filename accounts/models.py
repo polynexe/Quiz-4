@@ -16,7 +16,7 @@ def upload_image_path(instance, filename):
     return f"profile_pictures/{final_filename}"
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None, is_active=True, is_staff=False, is_admin=False):
+    def create_superuser(self, email, username, password=None, is_active=True, is_staff=True, is_admin=True):
         if not email:
             raise ValueError('Users must have an email address')
         if not password:
@@ -49,7 +49,7 @@ def create_superuser(self, email, username, password=None):
         username,
         password=password,
         is_staff=True,
-        is_superuser=True,
+        is_admin=True,
         is_active=True
     )
     return user

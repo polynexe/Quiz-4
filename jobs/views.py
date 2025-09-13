@@ -14,7 +14,7 @@ from .models import Job, JobApplicant
 class JobCreateView(CreateView):
     model = Job
     form_class = JobForm
-    template_name = 'job/job_create.html'
+    template_name = 'jobs/job_create.html'
     success_url = reverse_lazy('jobs:job_list')
     def form_valid(self, form):
         return super(JobCreateView, self).form_valid(form)
