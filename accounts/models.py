@@ -16,31 +16,35 @@ def upload_image_path(instance, filename):
     return f"profile_pictures/{final_filename}"
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
+    def create_user(self, email, username, password=None, is_active=True, is_staff=False, is_admin=False):
         if not email:
             raise ValueError('Users must have an email address')
         if not password:
             raise ValueError('Users must have a password')
 
         email = self.normalize_email(email)
-        user_obj = self.model(email=email, username=username)
-        user.set_password(password)
-        user.save(using=self._db)
+        user_obj = self.model(email=email)
+        user_obj.username = username
+        user_obj.is_active = is_active
+        user_obj.is_staff = is_staff
+        user_obj.is_superuser = is_admin
+        user_obj.set_password(password)
+        user_obj.save(using=self._db)
         return user_obj
 
 
 def create_staffuser(self, email, username, password=None):
-        return self.create_user(
-            email=email,
-            username=username,
-            password=password,
+        user = self.create_user(
+            email,
+            username,
+            password,
             is_staff=True,
             is_active=True
         )
-        # return self.create_user(email,username, password, is_staff=True, is_active=True)
+        return user
 
 def create_superuser(self, email, username, password=None):
-    return self.create_user(
+    user = self.create_user(
         email,
         username,
         password=password,
@@ -48,7 +52,7 @@ def create_superuser(self, email, username, password=None):
         is_superuser=True,
         is_active=True
     )
-    # return self.create_user(email, username, password, is_staff=True, is_superuser=True, is_active=True)
+    return user
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -63,11 +67,11 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-    # def has_perm(self, perm, obj=None):
-    #     return True
-    #
-    # def has_module_perms(self, app_label):
-    #     return True
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
     #
     # @property
     # def is_staff(self):
