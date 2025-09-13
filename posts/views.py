@@ -21,6 +21,19 @@ class PostListView(ListView):
 class PostDetailSlugView(DetailView):
     queryset = Post.objects.all()
     template_name = 'posts/post_detail.html'
+
+    def get_object(self, *args, **kwargs):
+        slug = self.kwargs.get('slug')
+        try:
+            instance = Post.objects.get(slug=slug)
+        except Post.DoesNotExist:
+            raise Http404("Post not found")
+        except Post.MultipleObjectsReturned:
+            qs = Post.objects.filter(slug=slug)
+            instance = qs.first()
+        except:
+            raise Http404("Invalid slug")
+        return instance
     
 class PostDeleteView(DeleteView):
     model = Post

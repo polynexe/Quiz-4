@@ -33,10 +33,23 @@
                                             <button class="btn btn-light btn-sm rounded-circle" type="button" data-bs-toggle="dropdown" onclick="event.preventDefault();">
                                                 <i class="bi bi-three-dots"></i>
                                             </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="{% url 'posts:post-update' post.slug %}" onclick="event.preventDefault(); window.location.href=this.href;">Edit</a></li>
-                                                <li><a class="dropdown-item text-danger" href="{% url 'posts:post-delete' post.slug %}" onclick="event.preventDefault(); window.location.href=this.href;">Delete</a></li>
-                                            </ul>
+                                            {% if post.slug %}
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li>
+                                                        <a class="dropdown-item" href="{% url 'posts:post-update' post.slug %}" onclick="event.preventDefault();">
+                                                            <i class="bi bi-pencil me-2"></i> Edit
+                                                        </a>
+                                                    </li>
+{#                                                    <li><hr class="dropdown-divider"></li>#}
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center text-danger" href="{% url 'posts:post-delete' post.slug %}" onclick="event.preventDefault();">
+                                                            <i class="bi bi-trash me-2"></i> Delete
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            {% else %}
+                                                <span class="text-muted small ms-2">No actions available</span>
+                                            {% endif %}
                                         </div>
                                     {% endif %}
                                 </div>
