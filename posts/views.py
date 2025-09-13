@@ -34,8 +34,6 @@ class PostDeleteView(DeleteView):
         return obj
     
 class PostUpdateView(LoginRequiredMixin, UpdateView):
-
-    
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         if obj.user != self.request.user:

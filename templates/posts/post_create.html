@@ -1,5 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="column-gap-md-5">
+                <h3>Create Post</h3>
+                <form method="post" enctype="multipart/form-data" action="{% url 'posts:post-create' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_title">Title</label>
+                        <input type="text" class="form-control" id="id_title" required>
+                    </div>
 
+                    <div class="mb-lg-5">
+                        <label for="id_content">Content</label>
+                        <textarea name="content" rows="4" cols="40" class="form-control" id="id_content" required></textarea>
+                    </div>
+                    <a href="{% url 'posts:post-list' %}" class="btn btn-link">Post</a>
+
+                </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
