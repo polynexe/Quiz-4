@@ -87,8 +87,8 @@ def job_apply(request, pk):
         resume = request.FILES.get('resume')
         if not resume:
             messages.error(request, 'Please upload your resume.')
-            return render(request, 'jobs/job_apply.html', {'job': job})
+            return render(request, 'jobs/job_list.html', {'job': job})
         JobApplicant.objects.create(job=job, user=request.user, resume=resume)
         messages.success(request, 'Application submitted successfully!')
         return redirect('jobs:job_detail_view', pk=job.pk)
-    return render(request, 'jobs/job_apply.html', {'job': job})
+    return render(request, 'jobs/job_list.html', {'job': job})
